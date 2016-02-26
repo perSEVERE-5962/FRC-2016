@@ -1,0 +1,14 @@
+sudo: false
+language: java
+install: git clone https://github.com/perSEVERE-5962/wpilib.git ~/wpilib
+script: ant jar
+jdk: oraclejdk8
+branches:
+  only:
+    - master
+notifications:
+  email: false
+  hipchat:
+    rooms:
+      secure: euBG+3ikWnIw0t22PCptXBGtEN/YL/CcVhVTV7k96cBPZw0PO4MkZQzFLUS0DM93RP7tNICrPzbN3QmSPQ68UIzlxy5/22o4O2meDU1Vf2syln7orYfTG+gGVigY0NwEUvzW8YO+DG85RzJXm4EIeq+ZAm1KAv8hRJmtr2973oHTLz4j3RsEgajzosRPCUgZNMzGhk4X17lAcVnlh8vw370wpDfHwFLcdPk0bWDd1PbbZEKJKraWOcYLjM0SUpOiBcPnkDmWT8xMzBnccjkGIZiBoTP0cAaBzJJY4H40EOe8xlmo2d39qVqntKAVttEr1FdidvZWBOzBUtqIpPLJohWyIo5VYVbaKG5r7EEGUOQ6JyzfBzJWFHqm3MQz2qsTRjPYlQgb+593mV4bPZOMBZhjBiLLznL49+4HstLRdIOQX9VzPlcM+28HltXQfF/tA2cE/lU8iQhZUWRmr/IbkpkeDd7dlR1/FDGVDIdAvLA0Xs5jOP4tYTA0hX4C4U4E63V371It3e9vHqg5MPDXypX1ojn2NmaXlIk8JObahn10msiYUqaQgaIL5EcZpzuUGEvCVZuNdbEtwwNVUgNOJv66H+atBjYgv7bAgomZUnf1irUNB9vrTbvMN74TxFlDEs941AtHUvrrAlSR4rx/8pcKKpL6KHhT3wXGfurxlU8=
+
