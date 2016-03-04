@@ -4,11 +4,10 @@ import edu.wpi.first.wpilibj.AnalogInput;
 
 public class RobotUltrasonicAnalog extends RobotUltrasonicBase{
 	AnalogInput ultrasonic; // ultrasonic sensor
-	int ultrasonicChannel = 3; // analog input pin
     final double valueToInches = 0.125; //factor to convert sensor values to a distance in inches
 
-    public RobotUltrasonicAnalog() {
-		ultrasonic = new AnalogInput(ultrasonicChannel);   
+    public RobotUltrasonicAnalog(int channel) {
+		ultrasonic = new AnalogInput(channel);   
     }
     
     public double getRange() {

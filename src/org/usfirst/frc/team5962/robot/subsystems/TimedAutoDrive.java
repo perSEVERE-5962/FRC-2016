@@ -18,7 +18,7 @@ public class TimedAutoDrive extends Subsystem {
 			 * 116.5 in 1.0 = 79 Dont use inconsistent 0.75 = 102 Slightly
 			 * inconsistent 0.5 = 150 0.25 = 332
 			 */
-			Robot.driveSubSystem.driveTime(gyro);
+			Robot.autonomousSubsystem.driveTime(gyro);
 			timetest++;
 		}
 

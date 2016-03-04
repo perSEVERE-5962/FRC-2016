@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5962.robot.commands;
 
 import org.usfirst.frc.team5962.robot.Robot;
+import org.usfirst.frc.team5962.robot.subsystems.JoystickThrottle;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -11,7 +12,7 @@ public class RunGameXTank extends Command {
 
     public RunGameXTank() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.driveSubSystem);
+        requires(Robot.drive);
     }
 
     // Called just before this Command runs the first time
@@ -21,7 +22,8 @@ public class RunGameXTank extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveSubSystem.gameXTank();
+    	Robot.drive.gameXTank();
+    	JoystickThrottle.Speed();
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -29,7 +31,8 @@ public class RunGameXTank extends Command {
     	 return Robot.oi.gameArcadeMode.get()
         	     || Robot.oi.gameXArcadeMode.get()
         	     || Robot.oi.gameTankMode.get()
-        		 || Robot.oi.joystickArcadeMode.get()
+        		 || Robot.oi.joystickArcadeModeRight.get()
+        		 || Robot.oi.joystickArcadeModeLeft.get()
         		 || Robot.oi.joystickTankMode.get();
     }
 

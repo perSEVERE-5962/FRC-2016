@@ -33,7 +33,7 @@ public class ExternalHand extends Subsystem {
 	
 	public void runDownward (){
 		myRobot.setMaxOutput(0.4);
-		myRobot.arcadeDrive(Robot.oi.gamePad1);
+		myRobot.arcadeDrive(Robot.oi.gamePad2);
 	}
 	
 	public double getSpeed (){
@@ -42,6 +42,8 @@ public class ExternalHand extends Subsystem {
 	
 	public void stop (){
 		Handvictor.set(0);  
-	}    
+	}
+	
+	
 }
 

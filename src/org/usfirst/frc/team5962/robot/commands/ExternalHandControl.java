@@ -7,17 +7,25 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ExternalHandControl extends Command {
-
-	public ExternalHandControl() {
+private boolean runDownward=true;
+	public ExternalHandControl(boolean runDownward)
+	{
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.externalHand);
 		setTimeout(0.3);
+		this.runDownward=runDownward;
 
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.externalHand.runUpward();
+		if(runDownward==true){ 
+			Robot.externalHand.runDownward();
+		} 
+		else
+		{
+			Robot.externalHand.runUpward();
+		}
 	}
 
 	// Called repeatedly when this Command is scheduled to run

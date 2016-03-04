@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5962.robot.commands;
 
 import org.usfirst.frc.team5962.robot.Robot;
+import org.usfirst.frc.team5962.robot.subsystems.JoystickThrottle;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -8,10 +9,12 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class RunArcadeJoystick extends Command {
+	boolean isRight = true;
 
-    public RunArcadeJoystick() {
+    public RunArcadeJoystick(boolean isRight) {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.driveSubSystem);
+        requires(Robot.drive);
+        this.isRight = isRight;
     }
 
     // Called just before this Command runs the first time
@@ -21,7 +24,15 @@ public class RunArcadeJoystick extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveSubSystem.arcadeJoystick();
+    	if (isRight == true)
+    	{
+    	Robot.drive.arcadeJoystickRight();
+    	}
+    	else
+    	{
+    	Robot.drive.arcadeJoystickLeft();
+    	}
+    	JoystickThrottle.Speed();
     }
 
     // Make this return true when this Command no longer needs to run execute()
