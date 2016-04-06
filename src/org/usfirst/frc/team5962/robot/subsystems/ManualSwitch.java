@@ -12,10 +12,11 @@ public class ManualSwitch extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-	private final static DigitalInput stopSwitch = RobotMap.manualSwitch;
+//	private final static DigitalInput stopSwitch = RobotMap.manualSwitch;
 	
 	public static boolean sensor (){
-		return stopSwitch.get();
+//		return stopSwitch.get();
+		return false;
 	  //Say when ball reaches sensor
 	}
 	

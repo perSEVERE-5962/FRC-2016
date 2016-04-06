@@ -11,14 +11,12 @@ public class ReleaseBallTop extends Command {
 
 	public ReleaseBallTop() {
 		// Use requires() here to declare subsystem dependencies
-		requires(Robot.upperLaunchMotor);
 		requires(Robot.inTake);
 		setTimeout(2);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.upperLaunchMotor.runUpward();
 		Robot.inTake.runUpward();
 	}
 
@@ -33,7 +31,6 @@ public class ReleaseBallTop extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.upperLaunchMotor.stop();
 		Robot.inTake.stop();
 	}
 

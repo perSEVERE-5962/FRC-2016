@@ -2,6 +2,7 @@ package org.usfirst.frc.team5962.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team5962.robot.commands.RunArcadeJoystick;
 import org.usfirst.frc.team5962.robot.commands.RunJoystickTank;
@@ -31,7 +32,7 @@ public class OI {
 	public JoystickButton gameTankMode;
 	public JoystickButton gameXTankMode;
 
-	public String currentDriveMode = "";
+	private String currentDriveMode = "";
 
 	public OI() {
 
@@ -96,23 +97,38 @@ public class OI {
 	}
 	
 	public double getCoPilotRightTrigger() {
-		return gamePad2.getRawAxis(3);
+		double value = gamePad1.getRawAxis(3);
+//		SmartDashboard.putString("right trigger", "" + value);
+		return value;
 	}
 	
 	public double getCoPilotLeftTrigger() {
-		return gamePad2.getRawAxis(2);
+		double value = gamePad1.getRawAxis(2);
+//		SmartDashboard.putString("left trigger", "" + value);
+		return value;
 	}
 	
-	public double getCoPilotHorizontalCameraAxis(){
-		return gamePad2.getRawAxis(4);
-	}
-	
-	public double getCoPilotVerticalCameraAxis(){
-		return gamePad2.getRawAxis(5);
-	}
+//	public double getCoPilotHorizontalCameraAxis(){
+//		double value = gamePad1.getRawAxis(4);
+////		SmartDashboard.putString("Horizontal Camera Axis", "" + value);
+//		return value;
+//	}
+//	
+//	public double getCoPilotVerticalCameraAxis(){
+//		double value = gamePad1.getRawAxis(5);
+////		SmartDashboard.putString("Vertical Camera Axis", "" + value);
+//		return value;
+//	}
 	
 	public int getCoPilotPOV(){
-		return gamePad1.getPOV();
+		int value = gamePad1.getPOV();
+//		SmartDashboard.putString("POV", "" + value);
+		return value;
+	}
+	
+	public void setCurrentDriverMode(String mode) {
+		currentDriveMode = mode;
+		SmartDashboard.putString("Driver Mode Choose", currentDriveMode);
 	}
 
 }

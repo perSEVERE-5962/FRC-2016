@@ -1,15 +1,19 @@
 package org.usfirst.frc.team5962.robot.sensors;
 
+
 public abstract class RobotUltrasonicBase {
 	
 	public static final int DEFAULT_HOLD_DISTANCE = 12;
 	public static final double DEFAULT_SPEED_CONSTANT = 0.05;
+	public static final String DEFAULT_ENABLE_KEY = "Enable Ultrasonic Range Finder";
 	
 	//distance in inches the robot wants to stay from an object
     int holdDistance = DEFAULT_HOLD_DISTANCE; 
     
     //proportional speed constant
     double speedConstant = DEFAULT_SPEED_CONSTANT; 
+    
+    String enableKey = "";
 	
     public abstract double getRange();
     
@@ -40,5 +44,8 @@ public abstract class RobotUltrasonicBase {
 	public double getSpeedConstant() {
 		return speedConstant;
 	}
+	
+	public abstract boolean isEnabled();
 
+	
 }

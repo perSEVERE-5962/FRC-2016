@@ -11,7 +11,7 @@ public class UpperLaunchMotor extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-	
+/*	
 	Victor victor = RobotMap.upperLaunchVictor;
 
 	
@@ -29,7 +29,7 @@ public class UpperLaunchMotor extends Subsystem {
 		victor.set(0);
 	  //Turn off Belt
 	}
-	
+*/	
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.

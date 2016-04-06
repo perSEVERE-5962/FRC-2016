@@ -24,16 +24,23 @@ public class ExternalHand extends Subsystem {
     }
 	
 	public void runUpward (){
-		Handvictor.set(-0.4);  
+		//Handvictor.set(-0.4);  
+		myRobot.drive(-0.4, 0);
 	}
 	
-//	public void runDownward (){
-//		Handvictor.set(0.4);  
-//	}
-	
 	public void runDownward (){
+		//Handvictor.set(0.4);  
+		myRobot.drive(0.4, 0);
+	}
+	
+	public void runDownwardTeleop (){
 		myRobot.setMaxOutput(0.4);
-		myRobot.arcadeDrive(Robot.oi.gamePad2);
+		myRobot.arcadeDrive(Robot.oi.gamePad1);
+	}
+	
+	public void DriveHandAtFull (){
+		myRobot.setMaxOutput(1);
+		myRobot.arcadeDrive(Robot.oi.gamePad1.getRawAxis(5),Robot.oi.gamePad1.getRawAxis(5));
 	}
 	
 	public double getSpeed (){

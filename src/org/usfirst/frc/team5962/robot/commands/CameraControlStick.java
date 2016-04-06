@@ -31,10 +31,12 @@ public class CameraControlStick extends Command {
     // Called repeatedly when this Command is scheduled to run
     public void execute() {
     	
-    	valueX = RobotMap.axisCameraServoViewHorizontal.get();
-    	valueY = RobotMap.axisCameraServoViewVertical.get();
-    	double RightStickXAxis = Robot.oi.getCoPilotHorizontalCameraAxis();
-    	double RightStickYAxis = Robot.oi.getCoPilotVerticalCameraAxis();
+//    	valueX = RobotMap.axisCameraServoViewHorizontal.get();
+//    	valueY = RobotMap.axisCameraServoViewVertical.get();
+//    	double RightStickXAxis = Robot.oi.getCoPilotHorizontalCameraAxis();
+//    	double RightStickYAxis = Robot.oi.getCoPilotVerticalCameraAxis();
+    	double RightStickXAxis = 0;
+    	double RightStickYAxis = 0;
     	 
     	
     	if (RightStickYAxis <= -0.6)

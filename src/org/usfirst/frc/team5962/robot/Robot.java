@@ -2,14 +2,19 @@
 package org.usfirst.frc.team5962.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import org.usfirst.frc.team5962.robot.commands.CameraControlStick;
 import org.usfirst.frc.team5962.robot.commands.ReleaseBallTop;
 import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
+import org.usfirst.frc.team5962.robot.commands.RunJoystickTank;
+import org.usfirst.frc.team5962.robot.sensors.MockRobotEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
+
 import org.usfirst.frc.team5962.robot.sensors.RobotUltrasonicDigital;
 import org.usfirst.frc.team5962.robot.subsystems.TimedAutoDrive;
 import org.usfirst.frc.team5962.robot.subsystems.Autonomous;
@@ -19,6 +24,7 @@ import org.usfirst.frc.team5962.robot.subsystems.Drive;
 import org.usfirst.frc.team5962.robot.subsystems.InTakeMotor;
 import org.usfirst.frc.team5962.robot.subsystems.JoystickThrottle;
 import org.usfirst.frc.team5962.robot.subsystems.ExternalHand;
+import java.lang.Math;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,18 +36,19 @@ public class Robot extends IterativeRobot {
 	public TimedAutoDrive timedAutoDrive;
 	public static JoystickThrottle throttle;
 	
-	public static UpperLaunchMotor upperLaunchMotor;
 	public static InTakeMotor inTake;
-	public static ReleaseBallTop releaseBallTop;
+//	public static ReleaseBallTop releaseBallTop;
 	public static ExternalHand externalHand;
-	
-	public static Camera camera;
+	public static Camera camera = new Camera();
 	//public static CameraControlPOV cameraControl;
-	public static CameraControlStick cameraControlStick;
+	//public static CameraControlStick cameraControlStick;
 	
-	public static RobotGyro gyro;
-	public static RobotEncoder encoder;
-	public static RobotUltrasonicDigital ultrasonic;
+
+	public static RobotGyro gyro= new RobotGyro();
+
+	
+	public static RobotEncoder encoder = new RobotEncoder();
+//	public static RobotUltrasonicDigital ultrasonic;
 	
 	public static OI oi;
 	
@@ -63,39 +70,46 @@ public class Robot extends IterativeRobot {
 		DRAWBRIDGE,
 		SALLY_PORT,
 		ROCK_WALL,
-		ROUCH_TERRAIN
+		ROUGH_TERRAIN,
+		NONE
 	}
 	
 	RunAutonomous autonomousCommand;
 	SendableChooser autoPositionChooser;
 	SendableChooser autoObstacleChooser;
 
+//	enum ShooterChoices {
+//		UPPER, LOWER
+//	}
+//	SendableChooser shooterChooser;
+//	ShooterChoices shooterChoice = ShooterChoices.UPPER;
+	
 	public void robotInit() {	
 		/*
 		 * Choose the proper robot drive and then re-deploy to the rio
 		 */
-		RobotMap.init(RobotMap.COMPETITION_ROBOT_DRIVE);
-	//	RobotMap.init(RobotMap.TEST_ROBOT_DRIVE);
+		RobotMap.init();
 		
 		drive = new Drive();
 		
-		timedAutoDrive = new TimedAutoDrive();
-		throttle = new JoystickThrottle();
-		
-		upperLaunchMotor = new UpperLaunchMotor();
 		inTake = new InTakeMotor();
-		releaseBallTop = new ReleaseBallTop();
 		externalHand= new ExternalHand();
 		
-		gyro = new RobotGyro();
-		encoder = new RobotEncoder();
-		ultrasonic = new RobotUltrasonicDigital(RobotMap.DIO_CHANNEL_8, RobotMap.DIO_CHANNEL_7);
+
+//		ultrasonic = new RobotUltrasonicDigital(RobotMap.DIO_CHANNEL_8, RobotMap.DIO_CHANNEL_7);
+
 		
 		oi = new OI();
 		
+		gyro.resetGyro();
+	
 		initAutonomousPositionChooser();
 		initAutonomousObstacleChooser();
+
 		
+		//initShooterChooser();
+
+		//shooterChoice = (ShooterChoices) shooterChooser.getSelected();		
 	}
 	
 	private void initAutonomousPositionChooser() {
@@ -105,11 +119,13 @@ public class Robot extends IterativeRobot {
 		autoPositionChooser.addObject("Position 3", AutonomousPosition.POSITION_3);
 		autoPositionChooser.addObject("Position 4", AutonomousPosition.POSITION_4);
 		autoPositionChooser.addObject("Position 5", AutonomousPosition.POSITION_5);	
+		SmartDashboard.putData("Select Autonomous Start Position", autoPositionChooser);
 	}
 	
 	private void initAutonomousObstacleChooser() {
 		autoObstacleChooser = new SendableChooser();
-		autoObstacleChooser.addDefault("Low Bar", AutonomousObstacle.LOW_BAR);
+		autoObstacleChooser.addDefault("None", AutonomousObstacle.NONE);
+		autoObstacleChooser.addObject("Low Bar", AutonomousObstacle.LOW_BAR);
 		autoObstacleChooser.addObject("Portcullis", AutonomousObstacle.PORTCULLIS);
 		autoObstacleChooser.addObject("Cheval de Frise", AutonomousObstacle.CHEVAL_DE_FRISE);
 		autoObstacleChooser.addObject("Moat", AutonomousObstacle.MOAT);
@@ -117,8 +133,18 @@ public class Robot extends IterativeRobot {
 		autoObstacleChooser.addObject("Drawbridge", AutonomousObstacle.DRAWBRIDGE);
 		autoObstacleChooser.addObject("Sally Port", AutonomousObstacle.SALLY_PORT);
 		autoObstacleChooser.addObject("Rock Wall", AutonomousObstacle.ROCK_WALL);
-		autoObstacleChooser.addObject("Rough Terrain", AutonomousObstacle.ROUCH_TERRAIN);		
+		autoObstacleChooser.addObject("Rough Terrain", AutonomousObstacle.ROUGH_TERRAIN);		
+		SmartDashboard.putData("Select Autonomous Start Obstacle", autoObstacleChooser);
 	}
+
+//	private void initShooterChooser() {
+//		shooterChooser = new SendableChooser();
+//		shooterChooser.addDefault("Upper", ShooterChoices.UPPER);
+//		shooterChooser.addObject("Lower", ShooterChoices.LOWER);
+//		SmartDashboard.putData("Select How Scorpio Will Shoot", shooterChooser);
+//
+//	}
+	
 
 	public void disabledInit() {
 
@@ -128,22 +154,19 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 	}
 
-	double timeTest = 0;
+	
 	public void autonomousInit() {
-		gyro.resetGyro();
-		timeTest = 0;
-		encoder.reset();
-		
-		ultrasonic.ultraStart();
 
-		int angleInt = gyro.getGyroAngle();
-		SmartDashboard.putString("Gyro Angle", "" + angleInt);
+		encoder.reset();		
+//		ultrasonic.ultraStart();
+		SmartDashboard.putString("Starting Gyro Angle", gyro.getGyroAngle()+"");
 		
 		autonomousSubsystem = new Autonomous();
 		
 		AutonomousPosition position = (AutonomousPosition) autoPositionChooser.getSelected();
 		AutonomousObstacle obstacle = (AutonomousObstacle) autoObstacleChooser.getSelected();
 		autonomousCommand = new RunAutonomous(position, obstacle);
+
 
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
@@ -153,39 +176,22 @@ public class Robot extends IterativeRobot {
 	/**
 	 * This function is called periodically during autonomous
 	 */
-	int i = 0;
-	
 	public void autonomousPeriodic() {
-		
-		//double distance = ultrasonic.getRange();
-		
-		// moving negative is right, positive is left
-		// gyro negative is left, positive is right
+	
 		Scheduler.getInstance().run();
-		//ultrasonic.ultrasonic.ping();
-//		 RobotMap.myRobot.setMaxOutput(1);
-//		 drive.autoDrive();
-//		SmartDashboard.putString("IntakeSpeed", "" + RobotMap.inTakeVictor.getSpeed());
-//		
-//		SmartDashboard.putNumber("Ultrasonic Range Autonomous", ultrasonic.getRange());
-//		SmartDashboard.putString("Ultrasonic Range Valid?", ""+ultrasonic.getValid());
-//		
-//		// Switch out Encoders^ Time v
-//		// timedAutoDrive.autoDrive(gyro);
-//
-//		int angleInt = gyro.getGyroAngle();
-//		SmartDashboard.putString("Gyro Angle", "" + angleInt);
-//		SmartDashboard.putString("Key", ""+i++);
-//		
+
 	}
 
-	public void teleopInit() {
+	public void teleopInit() {	
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 		
-		camera = new Camera();
-		//cameraControl= new CameraControl();
-		cameraControlStick = new CameraControlStick();
+//		cameraControlStick = new CameraControlStick();
+		
+		// set the default
+		Command command = new RunJoystickTank();
+//		Command command = new RunGameTank();
+		command.start();
 	}
 
 	/**
@@ -193,46 +199,48 @@ public class Robot extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-
-		//int angleInt = gyro.getGyroAngle();
-		
-		cameraControlStick.execute();
+		double LeftJoystickStick = Math.abs(oi.gamePad1.getRawAxis(1));
+		double RightJoystickStick = Math.abs(oi.gamePad1.getRawAxis(5));
+		SmartDashboard.putString("Rightjoystick", RightJoystickStick+"");
+		SmartDashboard.putString("Leftjoystick", LeftJoystickStick+"");
+		SmartDashboard.putString("handVictorSpeed", RobotMap.handVictor.getSpeed()+"");
+//		cameraControlStick.execute();
 				
 		if (oi.getCoPilotRightTrigger() >= 0.5)
 		{	
 		   	inTake.runUpwardSlow();
 		
 		}
-		else {
-			inTake.stop();
-		}				
-				
-		if (oi.getCoPilotLeftTrigger() >= 0.5)
+		else if (oi.getCoPilotLeftTrigger() >= 0.5)
 		{
-			upperLaunchMotor.runUpward();
-		   	inTake.runUpward();
+		   	inTake.runDownward();
 		}
 		else 
 		{
-			upperLaunchMotor.stop();
 			inTake.stop();
 		}
-								
-		externalHand.runDownward();		
-				
-		//SmartDashboard.putString("Gyro Angle", "" + angleInt);
-		SmartDashboard.putString("Throttle", "" + oi.joystickRight.getThrottle());
-		SmartDashboard.putString("left trigger", "" + oi.gamePad2.getRawAxis(2));
-		SmartDashboard.putString("right trigger", "" + oi.gamePad2.getRawAxis(3));
-		SmartDashboard.putString("Driver Mode Choose", oi.currentDriveMode);
-		SmartDashboard.putNumber("Ultrasonic Range", ultrasonic.getRange());
-        SmartDashboard.putString("Intake","" + RobotMap.inTakeVictor.getSpeed());	
-        SmartDashboard.putString("Arm", "" + RobotMap.handVictor.getSpeed());
-	 /*   SmartDashboard.putString("Talon1", "" + RobotMap.CANTalon1.getSpeed());
-	    SmartDashboard.putString("Talon2", "" + RobotMap.CANTalon2.getSpeed());
-	    SmartDashboard.putString("Talon3", "" + RobotMap.CANTalon3.getSpeed());
-	    SmartDashboard.putString("Talon4", "" + RobotMap.CANTalon4.getSpeed());
-	*/
+							
+		
+		if (Math.abs(oi.gamePad1.getRawAxis(5)) > Math.abs(oi.gamePad1.getRawAxis(1)))
+		{	
+			if (Math.abs(oi.gamePad1.getRawAxis(5)) > 0.079)
+			{
+				externalHand.DriveHandAtFull();
+			}
+		}
+		else if (Math.abs(oi.gamePad1.getRawAxis(5)) < Math.abs(oi.gamePad1.getRawAxis(1)))
+		{
+			if (Math.abs(oi.gamePad1.getRawAxis(1)) > 0.079)
+			{
+				externalHand.runDownwardTeleop();
+			}
+		}
+		
+		
+		
+		
+		
+		//externalHand2.runDownwardTeleopRightStick();
 	}
 
 	/**
@@ -240,5 +248,7 @@ public class Robot extends IterativeRobot {
 	 */
 	public void testPeriodic() {
 		LiveWindow.run();
+		SmartDashboard.putString("Starting Gyro Angle", gyro.getGyroAngle()+"");
+
 	}
 }

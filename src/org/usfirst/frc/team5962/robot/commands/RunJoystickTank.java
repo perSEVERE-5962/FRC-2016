@@ -17,7 +17,7 @@ public class RunJoystickTank extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.oi.currentDriveMode = "Joysticks in Tankdrive mode";
+    	Robot.oi.setCurrentDriverMode("Joysticks in Tankdrive mode");
     }
 
     // Called repeatedly when this Command is scheduled to run

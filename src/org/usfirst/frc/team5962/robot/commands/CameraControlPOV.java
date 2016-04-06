@@ -33,8 +33,8 @@ public class CameraControlPOV extends Command {
 	protected void execute() {
 		int pov=Robot.oi.getCoPilotPOV();
 
-		valueX = RobotMap.axisCameraServoViewHorizontal.get();
-		valueY = RobotMap.axisCameraServoViewVertical.get();
+//		valueX = RobotMap.axisCameraServoViewHorizontal.get();
+//		valueY = RobotMap.axisCameraServoViewVertical.get();
 
 		if (pov == 0) {
 			up = true;

@@ -43,6 +43,7 @@ public class Drive extends Subsystem {
 		RobotMap.myRobot.arcadeDrive(Robot.oi.gamePad2);
 	}
 
+
 ////////////////////////////////////////////////////////	
 // MOVED THE FOLLOWING CODE TO THE Autonomous SUBSYSTEM
 ////////////////////////////////////////////////////////
@@ -83,6 +84,7 @@ public class Drive extends Subsystem {
 //		int angleInt = gyro.getGyroAngle();
 //		RobotMap.myRobot.drive(-0.25, -angleInt * 0.03);
 //	}
+
 
 	@Override
 	protected void initDefaultCommand() {

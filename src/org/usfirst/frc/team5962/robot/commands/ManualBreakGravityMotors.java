@@ -11,7 +11,6 @@ public class ManualBreakGravityMotors extends Command {
 
 	public ManualBreakGravityMotors() {
 		// Use requires() here to declare subsystem dependencies
-		requires(Robot.upperLaunchMotor);
 		requires(Robot.inTake);
 
 		setTimeout(.9);
@@ -19,7 +18,6 @@ public class ManualBreakGravityMotors extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.upperLaunchMotor.stop();
 		Robot.inTake.stop();
 	}
 

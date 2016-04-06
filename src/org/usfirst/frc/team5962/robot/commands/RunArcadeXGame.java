@@ -17,7 +17,7 @@ public class RunArcadeXGame extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.oi.currentDriveMode = "Xbox Gamepad in Arcade mode";
+    	Robot.oi.setCurrentDriverMode("Xbox Gamepad in Arcade mode");
     }
 
     // Called repeatedly when this Command is scheduled to run

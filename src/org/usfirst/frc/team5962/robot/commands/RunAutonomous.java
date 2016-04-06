@@ -5,6 +5,7 @@ import org.usfirst.frc.team5962.robot.RobotMap;
 import org.usfirst.frc.team5962.robot.subsystems.Autonomous;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RunAutonomous  extends Command  {
 
@@ -21,6 +22,9 @@ public class RunAutonomous  extends Command  {
 		this.position = position;
 		this.obstacle = obstacle;
 		
+		SmartDashboard.putString("Autonomous Position Selected", position.toString());
+		SmartDashboard.putString("Autonomous Obstacle Selected", obstacle.toString());
+		
         // Use requires() here to declare subsystem dependencies
         requires(autonomousSubsystem);
 
@@ -28,8 +32,9 @@ public class RunAutonomous  extends Command  {
 
 	@Override
 	protected void initialize() {
-		 RobotMap.myRobot.setMaxOutput(1);
 		 Robot.encoder.reset();
+		 Robot.gyro.resetGyro();
+		 RobotMap.myRobot.setMaxOutput(1);
 	}
 	
 	private void reachObstacle() {
@@ -37,6 +42,9 @@ public class RunAutonomous  extends Command  {
 		switch (obstacle) {
 		case CHEVAL_DE_FRISE:
 			reachedObstacle = autonomousSubsystem.driveToChevalDeFrise(); 
+			break;
+		case LOW_BAR:
+			reachedObstacle = autonomousSubsystem.driveToObstacle();
 			break;
 		default:
 			reachedObstacle = autonomousSubsystem.driveToObstacle(); 
@@ -53,11 +61,17 @@ public class RunAutonomous  extends Command  {
 		case MOAT:
 		case RAMPARTS:
 		case ROCK_WALL:
-		case ROUCH_TERRAIN:
+			autonomousSubsystem.setForwardSpeed(-0.7);
 			clearedObstacle = autonomousSubsystem.clearObstacle(); 
 			break;
+		case ROUGH_TERRAIN:
+			autonomousSubsystem.setForwardSpeed(-1.0);
+			clearedObstacle = autonomousSubsystem.clearObstacle(); 
+			break;
+
 		default:
 			// nothing to do, we are done
+			//SmartDashboard.putString("Encoder value at end of reaching obstacle", Robot.gyro.getGyroAngle()+"");
 			clearedObstacle = true;
 			isFinished = true;
 			break;
@@ -65,39 +79,43 @@ public class RunAutonomous  extends Command  {
 	}
 	
 	private void attackCastle() {
-		// try to shoot!
-		switch (position) {
-		case POSITION_2:
-			isFinished = autonomousSubsystem.attackFromPosition2();
-			break;
-		case POSITION_3:
-			isFinished = autonomousSubsystem.attackFromPosition3();
-			break;
-		case POSITION_4:
-			isFinished = autonomousSubsystem.attackFromPosition4();
-			break;
-		case POSITION_5:
-			isFinished = autonomousSubsystem.attackFromPosition5();
-			break;
-		default:
-			// can't shoot from position 1 (low bar)
-			isFinished = true;
-			break;
-		}		
+		
+		isFinished = autonomousSubsystem.attackFromPosition3();
+//		// try to shoot!
+//		switch (position) {
+//		case POSITION_2:
+//			isFinished = autonomousSubsystem.attackFromPosition2();
+//			break;
+//		case POSITION_3:
+//			isFinished = autonomousSubsystem.attackFromPosition3();
+//			break;
+//		case POSITION_4:
+//			isFinished = autonomousSubsystem.attackFromPosition4();
+//			break;
+//		case POSITION_5:
+//			isFinished = autonomousSubsystem.attackFromPosition5();
+//			break;
+//		default:
+//			// can't shoot from position 1 (low bar)
+//			isFinished = true;
+//			break;
+//		}		
 	}
 
 	@Override
 	protected void execute() {
-		if (isFinished) {
-			return;
+		if (isFinished || obstacle == Robot.AutonomousObstacle.NONE) {
+			//SmartDashboard.putString("execute", "FINISHED");
+
+			RobotMap.myRobot.drive(0, 0);
 		}
-		
-		if (!reachedObstacle) {
+		else if (!reachedObstacle) {
 			reachObstacle();
 		} else if (!clearedObstacle) {
 			clearObstacle();
 		} else {
-			attackCastle();
+			//attackCastle();
+			RobotMap.myRobot.drive(0, 0);
 		}
 	}
 	

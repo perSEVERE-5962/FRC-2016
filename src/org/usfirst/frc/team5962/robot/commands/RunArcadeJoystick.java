@@ -19,7 +19,7 @@ public class RunArcadeJoystick extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.oi.currentDriveMode = "Joystick in Arcade mode";
+    	Robot.oi.setCurrentDriverMode("Joystick in Arcade mode");
     }
 
     // Called repeatedly when this Command is scheduled to run

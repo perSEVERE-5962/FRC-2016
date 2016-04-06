@@ -22,12 +22,12 @@ public class Camera extends Subsystem {
 	}
 
 	public void moveX(double changeValue) {
-		RobotMap.axisCameraServoViewHorizontal.set(changeValue);
+//		RobotMap.axisCameraServoViewHorizontal.set(changeValue);
 
 	}
 
 	public void moveY(double changeValue) {
-		RobotMap.axisCameraServoViewVertical.set(changeValue);
+//		RobotMap.axisCameraServoViewVertical.set(changeValue);
 
 	}
 
