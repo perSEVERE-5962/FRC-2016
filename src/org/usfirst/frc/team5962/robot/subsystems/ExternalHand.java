@@ -33,8 +33,12 @@ public class ExternalHand extends Subsystem {
 		myRobot.drive(0.4, 0);
 	}
 	
+	public void runDownwardHalf(){
+		myRobot.drive(1, 0);
+	}
+	
 	public void runDownwardTeleop (){
-		myRobot.setMaxOutput(0.4);
+		myRobot.setMaxOutput(1);
 		myRobot.arcadeDrive(Robot.oi.gamePad1);
 	}
 	

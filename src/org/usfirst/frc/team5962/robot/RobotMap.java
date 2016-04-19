@@ -1,9 +1,7 @@
 package org.usfirst.frc.team5962.robot;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,6 +23,7 @@ public class RobotMap {
 	public static Victor testRobotLeftVictor2;
 	public static Victor testRobotRightVictor1;
 	public static Victor testRobotRightVictor2;
+	public static Victor scalingVictor;
 	public static Victor handVictor;
 	
 
@@ -46,26 +45,26 @@ public class RobotMap {
 	// PWM Channels
 	private final static int PWM_CHANNEL_0 = 0;
 	private final static int PWM_CHANNEL_1 = 1;
-//	private final static int PWM_CHANNEL_2 = 2;
+	private final static int PWM_CHANNEL_2 = 2;
 //	private final static int PWM_CHANNEL_3 = 3;
 	private final static int PWM_CHANNEL_4 = 4;
 	//private final static int PWM_CHANNEL_5 = 5;
 	private final static int PWM_CHANNEL_6 = 6;
 	private final static int PWM_CHANNEL_7 = 7;
 	private final static int PWM_CHANNEL_8 = 8;
-	private final static int PWM_CHANNEL_9 = 9;
+	//private final static int PWM_CHANNEL_9 = 9;
 	
 	// DIO Channels
-	//private final static int DIO_CHANNEL_0 = 0;
-	//private final static int DIO_CHANNEL_1 = 1;
-	//private final static int DIO_CHANNEL_2 = 2;
-	//private final static int DIO_CHANNEL_3 = 3;
-	//private final static int DIO_CHANNEL_4 = 4;
-	//private final static int DIO_CHANNEL_5 = 5;
-	//private final static int DIO_CHANNEL_6 = 6;
+	//public final static int DIO_CHANNEL_0 = 0;
+	//public final static int DIO_CHANNEL_1 = 1;
+	//public final static int DIO_CHANNEL_2 = 2;
+	//public final static int DIO_CHANNEL_3 = 3;
+	//public final static int DIO_CHANNEL_4 = 4;
+	public final static int DIO_CHANNEL_5 = 5;
+	public final static int DIO_CHANNEL_6 = 6;
 	public final static int DIO_CHANNEL_7 = 7;
 	public final static int DIO_CHANNEL_8 = 8;
-	private final static int DIO_CHANNEL_9 = 9;
+	public final static int DIO_CHANNEL_9 = 9;
 	
 	public final static int ULTRASONIC_ANALOG_CHANNEL = 3;
 
@@ -75,6 +74,11 @@ public class RobotMap {
 
 		handVictor = new Victor(PWM_CHANNEL_4);
 		handVictor.setSafetyEnabled(false);
+		
+//		scalingVictor = new Victor(PWM_CHANNEL_2);
+//		scalingVictor.setSafetyEnabled(false);
+		
+		
 
 //		axisCameraServoViewHorizontal = new Servo(PWM_CHANNEL_2);
 //		axisCameraServoViewVertical = new Servo(PWM_CHANNEL_3);
@@ -85,7 +89,7 @@ public class RobotMap {
 			configureRobotDrive(COMPETITION_ROBOT_DRIVE);
 //		} else {
 //			// in competition mode
-//			configureRobotDrive(TEST_ROBOT_DRIVE);
+			//configureRobotDrive(TEST_ROBOT_DRIVE);
 //		}
 	}
 		

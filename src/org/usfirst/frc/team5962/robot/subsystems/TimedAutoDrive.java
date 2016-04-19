@@ -1,6 +1,5 @@
 package org.usfirst.frc.team5962.robot.subsystems;
 
-import org.usfirst.frc.team5962.robot.Robot;
 import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -18,7 +17,7 @@ public class TimedAutoDrive extends Subsystem {
 			 * 116.5 in 1.0 = 79 Dont use inconsistent 0.75 = 102 Slightly
 			 * inconsistent 0.5 = 150 0.25 = 332
 			 */
-			Robot.autonomousSubsystem.driveTime(gyro);
+			//Robot.autonomousSubsystem.driveTime(gyro);
 			timetest++;
 		}
 

@@ -13,7 +13,7 @@ public class JoystickThrottle extends Subsystem {
 		SmartDashboard.putString("Throttle", "" + throttle);
 		RobotMap.myRobot.setMaxOutput(throttle);
 	}
-
+//comment
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub

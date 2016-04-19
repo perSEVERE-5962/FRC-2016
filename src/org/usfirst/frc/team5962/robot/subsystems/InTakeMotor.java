@@ -15,7 +15,7 @@ public class InTakeMotor extends Subsystem {
 	Victor inTakeVictor = RobotMap.inTakeVictor;
 	
 	public void runUpward (){
-		inTakeVictor.set(-1);
+		inTakeVictor.set(-0.5);
 	  //Turn on Belt
 	}
 	

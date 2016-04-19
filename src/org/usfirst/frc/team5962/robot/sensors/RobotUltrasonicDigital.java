@@ -13,7 +13,7 @@ public class RobotUltrasonicDigital extends RobotUltrasonicBase {
     	ultrasonic = new Ultrasonic(pingChannel, echoChannel); 												
     	ultrasonic.setEnabled(true);
     	ultrasonic.setAutomaticMode(true);
-		SmartDashboard.putBoolean("Enable Digital Ultrasonic Range Finder", true);
+	SmartDashboard.putBoolean("Enable Digital Ultrasonic Range Finder", true);
     }
     
     
@@ -24,7 +24,7 @@ public class RobotUltrasonicDigital extends RobotUltrasonicBase {
     
     public double getRange() {
     	double range = ultrasonic.getRangeInches();
-		SmartDashboard.putNumber("Ultrasonic Range", range);
+	SmartDashboard.putNumber("Ultrasonic Range", range);
     	return range;
     }
     

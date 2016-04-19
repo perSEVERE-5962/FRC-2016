@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotEncoder {
 	// encoders
-	Encoder encoderLeft;
-	Encoder encoderRight;
+Encoder encoderLeft;
+Encoder encoderRight;
 	
 	int numberOfEncoders = 2;
 
@@ -15,7 +15,7 @@ public class RobotEncoder {
 		encoderRight = new Encoder(2, 3, false, Encoder.EncodingType.k4X);
 		encoderLeft.setDistancePerPulse(0.027); // inches .027 for treads
 												// inches .035 for small wheels
-												// inches .02? for big wheels
+												// inches .052 for big wheels
 		encoderRight.setDistancePerPulse(0.027); 	
 	}
 	

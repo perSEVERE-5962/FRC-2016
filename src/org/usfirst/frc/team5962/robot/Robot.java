@@ -1,17 +1,14 @@
 
 package org.usfirst.frc.team5962.robot;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
-import org.usfirst.frc.team5962.robot.commands.CameraControlStick;
-import org.usfirst.frc.team5962.robot.commands.ReleaseBallTop;
 import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
 import org.usfirst.frc.team5962.robot.commands.RunJoystickTank;
-import org.usfirst.frc.team5962.robot.sensors.MockRobotEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
 
@@ -20,10 +17,16 @@ import org.usfirst.frc.team5962.robot.subsystems.TimedAutoDrive;
 import org.usfirst.frc.team5962.robot.subsystems.Autonomous;
 import org.usfirst.frc.team5962.robot.subsystems.Camera;
 import org.usfirst.frc.team5962.robot.subsystems.UpperLaunchMotor;
+
+import com.ni.vision.NIVision;
+import com.ni.vision.NIVision.Image;
+
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
 import org.usfirst.frc.team5962.robot.subsystems.InTakeMotor;
 import org.usfirst.frc.team5962.robot.subsystems.JoystickThrottle;
 import org.usfirst.frc.team5962.robot.subsystems.ExternalHand;
+import org.usfirst.frc.team5962.robot.subsystems.Scaling;
+
 import java.lang.Math;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -37,18 +40,27 @@ public class Robot extends IterativeRobot {
 	public static JoystickThrottle throttle;
 	
 	public static InTakeMotor inTake;
-//	public static ReleaseBallTop releaseBallTop;
 	public static ExternalHand externalHand;
+	public static Scaling scaling;
 	public static Camera camera = new Camera();
-	//public static CameraControlPOV cameraControl;
-	//public static CameraControlStick cameraControlStick;
+	
+	public static int currsession = 1;
+	public static int sessionfront = 1;
+	public static int sessionback = 0;
+	public static int camMode = 1;
+	public static Image frame;
+	
+	public static int lowDown = 0;
 	
 
 	public static RobotGyro gyro= new RobotGyro();
 
 	
 	public static RobotEncoder encoder = new RobotEncoder();
-//	public static RobotUltrasonicDigital ultrasonic;
+
+    public static RobotUltrasonicDigital ultrasonicShoot;
+   // public static RobotUltrasonicDigital ultrasonicFront;
+
 	
 	public static OI oi;
 	
@@ -77,12 +89,6 @@ public class Robot extends IterativeRobot {
 	RunAutonomous autonomousCommand;
 	SendableChooser autoPositionChooser;
 	SendableChooser autoObstacleChooser;
-
-//	enum ShooterChoices {
-//		UPPER, LOWER
-//	}
-//	SendableChooser shooterChooser;
-//	ShooterChoices shooterChoice = ShooterChoices.UPPER;
 	
 	public void robotInit() {	
 		/*
@@ -93,23 +99,31 @@ public class Robot extends IterativeRobot {
 		drive = new Drive();
 		
 		inTake = new InTakeMotor();
-		externalHand= new ExternalHand();
+
+		externalHand = new ExternalHand();
+		
+//		Camera.configureCamMode(Camera.CAM_MODE_FRONT);
+		
+		//try{
+//			sessionfront = NIVision.IMAQdxOpenCamera("cam0", NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+//			sessionback = NIVision.IMAQdxOpenCamera("cam1", NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+			//}catch(Exception ex){
+				
+			//}
+	//	scaling = new Scaling();
+		
 		
 
-//		ultrasonic = new RobotUltrasonicDigital(RobotMap.DIO_CHANNEL_8, RobotMap.DIO_CHANNEL_7);
 
-		
-		oi = new OI();
+	 //ultrasonicFront = new RobotUltrasonicDigital(RobotMap.DIO_CHANNEL_8, RobotMap.DIO_CHANNEL_7);
+     ultrasonicShoot = new RobotUltrasonicDigital(RobotMap.DIO_CHANNEL_8, RobotMap.DIO_CHANNEL_7);
+	//ultrasonicFront = ultrasonicShoot;
+       oi = new OI();
 		
 		gyro.resetGyro();
 	
 		initAutonomousPositionChooser();
 		initAutonomousObstacleChooser();
-
-		
-		//initShooterChooser();
-
-		//shooterChoice = (ShooterChoices) shooterChooser.getSelected();		
 	}
 	
 	private void initAutonomousPositionChooser() {
@@ -135,16 +149,7 @@ public class Robot extends IterativeRobot {
 		autoObstacleChooser.addObject("Rock Wall", AutonomousObstacle.ROCK_WALL);
 		autoObstacleChooser.addObject("Rough Terrain", AutonomousObstacle.ROUGH_TERRAIN);		
 		SmartDashboard.putData("Select Autonomous Start Obstacle", autoObstacleChooser);
-	}
-
-//	private void initShooterChooser() {
-//		shooterChooser = new SendableChooser();
-//		shooterChooser.addDefault("Upper", ShooterChoices.UPPER);
-//		shooterChooser.addObject("Lower", ShooterChoices.LOWER);
-//		SmartDashboard.putData("Select How Scorpio Will Shoot", shooterChooser);
-//
-//	}
-	
+	}	
 
 	public void disabledInit() {
 
@@ -158,7 +163,6 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 
 		encoder.reset();		
-//		ultrasonic.ultraStart();
 		SmartDashboard.putString("Starting Gyro Angle", gyro.getGyroAngle()+"");
 		
 		autonomousSubsystem = new Autonomous();
@@ -179,14 +183,22 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 	
 		Scheduler.getInstance().run();
-
+		
+		
+		
+		
+		
 	}
 
 	public void teleopInit() {	
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 		
-//		cameraControlStick = new CameraControlStick();
+//		CameraServer.getInstance().setQuality(50);
+//		frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
+//		currsession = sessionfront;
+		
+		
 		
 		// set the default
 		Command command = new RunJoystickTank();
@@ -205,7 +217,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putString("Leftjoystick", LeftJoystickStick+"");
 		SmartDashboard.putString("handVictorSpeed", RobotMap.handVictor.getSpeed()+"");
 //		cameraControlStick.execute();
-				
+		
+		// process the intake/shoot controls
 		if (oi.getCoPilotRightTrigger() >= 0.5)
 		{	
 		   	inTake.runUpwardSlow();
@@ -221,24 +234,36 @@ public class Robot extends IterativeRobot {
 		}
 							
 		
-		if (Math.abs(oi.gamePad1.getRawAxis(5)) > Math.abs(oi.gamePad1.getRawAxis(1)))
-		{	
-			if (Math.abs(oi.gamePad1.getRawAxis(5)) > 0.079)
-			{
-				externalHand.DriveHandAtFull();
-			}
-		}
-		else if (Math.abs(oi.gamePad1.getRawAxis(5)) < Math.abs(oi.gamePad1.getRawAxis(1)))
+		
+		
+		// process the lift contols
+//		double driverPOV = oi.getDriverPOV();
+//		if (driverPOV > -1 && (driverPOV <= 90 || driverPOV >= 270)) {
+//			// move up
+//			scaling.runUpward();
+//		} else if (driverPOV > -1 && (driverPOV > 90 || driverPOV < 270)) {
+//			// move down
+//			scaling.runDownward();
+//		} else if (Math.abs(oi.getCoPilotScalingStick()) > 0.079) {
+//			scaling.scaleMotor();
+//		} else {
+//			scaling.stop();
+//		}
+
+
+		if (Math.abs(oi.getCoPilotBackArmStick()) > 0.079)
 		{
-			if (Math.abs(oi.gamePad1.getRawAxis(1)) > 0.079)
-			{
-				externalHand.runDownwardTeleop();
-			}
+			externalHand.runDownwardTeleop();
+		} else {
+			externalHand.stop();
 		}
 		
-		
-		
-		
+		//try{
+//		Camera.grabCameraImage();
+//		CameraServer.getInstance().setImage(frame);
+		//}catch(Exception ex){
+			
+		//}
 		
 		//externalHand2.runDownwardTeleopRightStick();
 	}
@@ -249,6 +274,6 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		LiveWindow.run();
 		SmartDashboard.putString("Starting Gyro Angle", gyro.getGyroAngle()+"");
-
+		ultrasonicShoot.getRange();
 	}
 }

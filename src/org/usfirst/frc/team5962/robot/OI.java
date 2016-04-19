@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team5962.robot.commands.CameraSwitch;
 import org.usfirst.frc.team5962.robot.commands.RunArcadeJoystick;
 import org.usfirst.frc.team5962.robot.commands.RunJoystickTank;
 
@@ -31,6 +32,8 @@ public class OI {
 	public JoystickButton joystickTankMode;
 	public JoystickButton gameTankMode;
 	public JoystickButton gameXTankMode;
+	public JoystickButton cameraSwitch;
+	//public JoystickButton joyCameraSwitch;
 
 	private String currentDriveMode = "";
 
@@ -57,13 +60,18 @@ public class OI {
 		joystickTankMode = new JoystickButton(joystickRight, 8);
 		gameTankMode = new JoystickButton(joystickRight, 12);
 		gameXTankMode = new JoystickButton(joystickRight, 10);
-
+		cameraSwitch = new JoystickButton(gamePad1, 1);
+		///joyCameraSwitch = new JoystickButton(joystickRight, 3);
+		
+		
 		// Driver mode Commands attached to the buttons
 		//gameArcadeMode.whenPressed(new RunArcadeGame());
 		//gameXArcadeMode.whenPressed(new RunArcadeXGame());
 		joystickArcadeModeRight.whenPressed(new RunArcadeJoystick(true));
 		joystickArcadeModeLeft.whenPressed(new RunArcadeJoystick(false));
 		joystickTankMode.whenPressed(new RunJoystickTank());
+		cameraSwitch.whenPressed(new CameraSwitch());
+		//joyCameraSwitch.whenPressed(new CameraSwitch());
 		//gameTankMode.whenPressed(new RunGameTank());
 		//gameXTankMode.whenPressed(new RunGameXTank());
 
@@ -124,6 +132,20 @@ public class OI {
 		int value = gamePad1.getPOV();
 //		SmartDashboard.putString("POV", "" + value);
 		return value;
+	}
+	
+	public int getDriverPOV(){
+		int value = joystickRight.getPOV();
+//		SmartDashboard.putString("POV", "" + value);
+		return value;
+	}
+	
+	public double getCoPilotScalingStick() {
+		return gamePad1.getRawAxis(5);
+	}
+	
+	public double getCoPilotBackArmStick() {
+		return gamePad1.getRawAxis(1);
 	}
 	
 	public void setCurrentDriverMode(String mode) {

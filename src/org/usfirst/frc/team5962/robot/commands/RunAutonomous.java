@@ -3,6 +3,7 @@ package org.usfirst.frc.team5962.robot.commands;
 import org.usfirst.frc.team5962.robot.Robot;
 import org.usfirst.frc.team5962.robot.RobotMap;
 import org.usfirst.frc.team5962.robot.subsystems.Autonomous;
+import org.usfirst.frc.team5962.robot.subsystems.ExternalHand;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,6 +13,9 @@ public class RunAutonomous  extends Command  {
 	private Robot.AutonomousPosition position;
 	private Robot.AutonomousObstacle obstacle;
 	private Autonomous autonomousSubsystem = Robot.autonomousSubsystem;
+	private ExternalHand externalHand = new ExternalHand();
+	
+	int lowDown = 0;
 	
 	
 	private boolean reachedObstacle = false;	// stage 1
@@ -35,6 +39,13 @@ public class RunAutonomous  extends Command  {
 		 Robot.encoder.reset();
 		 Robot.gyro.resetGyro();
 		 RobotMap.myRobot.setMaxOutput(1);
+		 SmartDashboard.putString("Lineup", "");
+		 SmartDashboard.putString("stop", "");
+		 SmartDashboard.putString("forward", "");
+		 SmartDashboard.putString("drivetocastle", "");
+		 SmartDashboard.putString("shoot", "");
+
+
 	}
 	
 	private void reachObstacle() {
@@ -44,6 +55,13 @@ public class RunAutonomous  extends Command  {
 			reachedObstacle = autonomousSubsystem.driveToChevalDeFrise(); 
 			break;
 		case LOW_BAR:
+			if(lowDown <= 10){
+				externalHand.runDownwardHalf();
+				lowDown++;
+			}
+			else{
+				externalHand.stop();
+			}
 			reachedObstacle = autonomousSubsystem.driveToObstacle();
 			break;
 		default:
@@ -60,6 +78,7 @@ public class RunAutonomous  extends Command  {
 			break;
 		case MOAT:
 		case RAMPARTS:
+		case LOW_BAR:	
 		case ROCK_WALL:
 			autonomousSubsystem.setForwardSpeed(-0.7);
 			clearedObstacle = autonomousSubsystem.clearObstacle(); 
@@ -80,26 +99,29 @@ public class RunAutonomous  extends Command  {
 	
 	private void attackCastle() {
 		
-		isFinished = autonomousSubsystem.attackFromPosition3();
+		
 //		// try to shoot!
-//		switch (position) {
-//		case POSITION_2:
-//			isFinished = autonomousSubsystem.attackFromPosition2();
-//			break;
-//		case POSITION_3:
-//			isFinished = autonomousSubsystem.attackFromPosition3();
-//			break;
-//		case POSITION_4:
-//			isFinished = autonomousSubsystem.attackFromPosition4();
-//			break;
-//		case POSITION_5:
-//			isFinished = autonomousSubsystem.attackFromPosition5();
-//			break;
-//		default:
-//			// can't shoot from position 1 (low bar)
-//			isFinished = true;
-//			break;
-//		}		
+     switch (position) {
+		case POSITION_1:
+			isFinished = autonomousSubsystem.attackFromPosition1();
+			break;
+		case POSITION_2:
+			isFinished = autonomousSubsystem.attackFromPosition2();
+			break;
+		case POSITION_3:
+			isFinished = autonomousSubsystem.attackFromPosition3();
+			break;
+		case POSITION_4:
+			isFinished = autonomousSubsystem.attackFromPosition4();
+			break;
+		case POSITION_5:
+			isFinished = autonomousSubsystem.attackFromPosition5();
+			break;
+		default:
+			// can't shoot from position 1 (low bar)
+			isFinished = true;
+			break;
+		}		
 	}
 
 	@Override
@@ -114,8 +136,8 @@ public class RunAutonomous  extends Command  {
 		} else if (!clearedObstacle) {
 			clearObstacle();
 		} else {
-			//attackCastle();
-			RobotMap.myRobot.drive(0, 0);
+			attackCastle();
+			//RobotMap.myRobot.drive(0, 0);
 		}
 	}
 	
