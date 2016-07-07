@@ -18,6 +18,7 @@ public class RobotMap {
 	public static final int TEST_ROBOT_DRIVE = 2;
 	
 	public static Victor inTakeVictor;
+	//public static Victor manipulatorVictor;
 
 	public static Victor testRobotLeftVictor1;
 	public static Victor testRobotLeftVictor2;
@@ -43,15 +44,15 @@ public class RobotMap {
 	public static boolean isTestRobot = false;
 	
 	// PWM Channels
-	private final static int PWM_CHANNEL_0 = 0;
+	private final static int PWM_CHANNEL_0 = 0; 
 	private final static int PWM_CHANNEL_1 = 1;
-	private final static int PWM_CHANNEL_2 = 2;
-//	private final static int PWM_CHANNEL_3 = 3;
+	//private final static int PWM_CHANNEL_2 = 2;
+	private final static int PWM_CHANNEL_3 = 3;
 	private final static int PWM_CHANNEL_4 = 4;
-	//private final static int PWM_CHANNEL_5 = 5;
+	private final static int PWM_CHANNEL_5 = 5;
 	private final static int PWM_CHANNEL_6 = 6;
 	private final static int PWM_CHANNEL_7 = 7;
-	private final static int PWM_CHANNEL_8 = 8;
+	//private final static int PWM_CHANNEL_8 = 8;
 	//private final static int PWM_CHANNEL_9 = 9;
 	
 	// DIO Channels
@@ -69,19 +70,21 @@ public class RobotMap {
 	public final static int ULTRASONIC_ANALOG_CHANNEL = 3;
 
 	public static void init() {
-		inTakeVictor = new Victor(PWM_CHANNEL_8);
+		inTakeVictor = new Victor(PWM_CHANNEL_3);
 		inTakeVictor.setSafetyEnabled(false);
 
 		handVictor = new Victor(PWM_CHANNEL_4);
 		handVictor.setSafetyEnabled(false);
 		
-//		scalingVictor = new Victor(PWM_CHANNEL_2);
-//		scalingVictor.setSafetyEnabled(false);
+		scalingVictor = new Victor(PWM_CHANNEL_5);
+		scalingVictor.setSafetyEnabled(false);		
 		
+//		manipulatorVictor = new Victor(PWM_CHANNEL_2);
+//		manipulatorVictor.setSafetyEnabled(false);
 		
 
-//		axisCameraServoViewHorizontal = new Servo(PWM_CHANNEL_2);
-//		axisCameraServoViewVertical = new Servo(PWM_CHANNEL_3);
+//		axisCameraServoViewHorizontal = new Servo(PWM_CHANNEL_8);
+//		axisCameraServoViewVertical = new Servo(PWM_CHANNEL_9);
 		
 		// configure the RobotDrive
 //		if (testSwitch.get()) {
@@ -89,7 +92,7 @@ public class RobotMap {
 			configureRobotDrive(COMPETITION_ROBOT_DRIVE);
 //		} else {
 //			// in competition mode
-			//configureRobotDrive(TEST_ROBOT_DRIVE);
+//			configureRobotDrive(TEST_ROBOT_DRIVE);
 //		}
 	}
 		
@@ -122,11 +125,14 @@ public class RobotMap {
 			CANTalon2 = new CANTalon(11);
 			CANTalon3 = new CANTalon(12);
 			CANTalon4 = new CANTalon(13);
+
 			
 		    leftDrive = new MultiSpeedController(CANTalon1, CANTalon2);
 		    rightDrive = new MultiSpeedController(CANTalon3, CANTalon4);
 		    leftDrive.setInverted(true);
 		    rightDrive.setInverted(true);
+		    
+		    
 /*		    
 			CANTalon1.setInverted(true);
 			CANTalon2.setInverted(true);

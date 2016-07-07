@@ -24,6 +24,7 @@ import com.ni.vision.NIVision.Image;
 import org.usfirst.frc.team5962.robot.subsystems.Drive;
 import org.usfirst.frc.team5962.robot.subsystems.InTakeMotor;
 import org.usfirst.frc.team5962.robot.subsystems.JoystickThrottle;
+import org.usfirst.frc.team5962.robot.subsystems.ManipulatorVictor;
 import org.usfirst.frc.team5962.robot.subsystems.ExternalHand;
 import org.usfirst.frc.team5962.robot.subsystems.Scaling;
 
@@ -41,6 +42,7 @@ public class Robot extends IterativeRobot {
 	
 	public static InTakeMotor inTake;
 	public static ExternalHand externalHand;
+	//public static ManipulatorVictor manipulatorVictor;
 	public static Scaling scaling;
 	public static Camera camera = new Camera();
 	
@@ -97,10 +99,10 @@ public class Robot extends IterativeRobot {
 		RobotMap.init();
 		
 		drive = new Drive();
-		
 		inTake = new InTakeMotor();
-
 		externalHand = new ExternalHand();
+//		manipulatorVictor = new ManipulatorVictor();
+		scaling = new Scaling();
 		
 //		Camera.configureCamMode(Camera.CAM_MODE_FRONT);
 		
@@ -110,7 +112,6 @@ public class Robot extends IterativeRobot {
 			//}catch(Exception ex){
 				
 			//}
-	//	scaling = new Scaling();
 		
 		
 
@@ -219,14 +220,22 @@ public class Robot extends IterativeRobot {
 //		cameraControlStick.execute();
 		
 		// process the intake/shoot controls
-		if (oi.getCoPilotRightTrigger() >= 0.5)
+		
+		
+		if (oi.getCoPilotRightTrigger() >= 0.5 && oi.getCoPilotLeftTrigger() < 0.5 && oi.getJoystickRightTrigger() == false && oi.getJoystickLeftTrigger() == false)
 		{	
 		   	inTake.runUpwardSlow();
 		
 		}
-		else if (oi.getCoPilotLeftTrigger() >= 0.5)
+		else if (oi.getCoPilotLeftTrigger() >= 0.5 && oi.getJoystickRightTrigger() == false && oi.getJoystickLeftTrigger() == false)
 		{
 		   	inTake.runDownward();
+		}
+		else if (oi.getJoystickLeftTrigger() == true && oi.getJoystickRightTrigger() == false){
+			inTake.runDownward();
+		}
+		else if (oi.getJoystickRightTrigger() == true){
+			inTake.runUpwardSlow();
 		}
 		else 
 		{
@@ -236,25 +245,32 @@ public class Robot extends IterativeRobot {
 		
 		
 		
-		// process the lift contols
-//		double driverPOV = oi.getDriverPOV();
-//		if (driverPOV > -1 && (driverPOV <= 90 || driverPOV >= 270)) {
-//			// move up
-//			scaling.runUpward();
-//		} else if (driverPOV > -1 && (driverPOV > 90 || driverPOV < 270)) {
-//			// move down
-//			scaling.runDownward();
-//		} else if (Math.abs(oi.getCoPilotScalingStick()) > 0.079) {
-//			scaling.scaleMotor();
-//		} else {
-//			scaling.stop();
-//		}
+		// process the lift contols 
+		double driverPOV = oi.getDriverPOV();
+		if (driverPOV >= 0 && (driverPOV <= 90 || driverPOV >= 270) && Math.abs(oi.getCoPilotScalingStick()) <= 0.079) {
+			// move up
+			scaling.runUpward();
+		} else if (driverPOV >= 0 && (driverPOV > 90 && driverPOV < 270) && Math.abs(oi.getCoPilotScalingStick()) <= 0.079) {
+			// move down
+			scaling.runDownward();
+		} else if (Math.abs(oi.getCoPilotScalingStick()) > 0.079) {
+			scaling.scaleMotor();
+		} else {
+			scaling.stop();
+		}
 
 
-		if (Math.abs(oi.getCoPilotBackArmStick()) > 0.079)
+		if (Math.abs(oi.getCoPilotBackArmStick()) > 0.079 && oi.getJoystickRightThree() == false && oi.getJoystickRightFive() == false)
 		{
 			externalHand.runDownwardTeleop();
-		} else {
+		}
+		else if(oi.getJoystickRightThree() == true && oi.getJoystickRightFive() == false){
+			externalHand.runDownward();
+		}
+		else if(oi.getJoystickRightFive() == true){
+			externalHand.runUpward();
+		}
+		else {
 			externalHand.stop();
 		}
 		

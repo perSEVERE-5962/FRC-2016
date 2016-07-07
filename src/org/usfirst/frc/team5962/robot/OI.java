@@ -20,10 +20,19 @@ public class OI {
 	public Joystick joystickRight;
 
 	// Buttons added to RightJoystick
-	public JoystickButton rightJoystickButton1Index;
-	public JoystickButton rightJoystickButton2Thumb;
+	public JoystickButton RightJoystickButton1Index;
+	public JoystickButton RightJoystickButton2Thumb;
 	public JoystickButton RightJoystickButton3;
 	public JoystickButton RightJoystickButton4;
+	public JoystickButton RightJoystickButton5;
+	public JoystickButton RightJoystickButton6;
+	
+	public JoystickButton LeftJoystickButton1Index;
+	public JoystickButton LeftJoystickButton2Thumb;
+	public JoystickButton LeftJoystickButton3;
+	public JoystickButton LeftJoystickButton4;
+	public JoystickButton LeftJoystickButton5;
+	public JoystickButton LeftJoystickButton6;
 
 	public JoystickButton gameArcadeMode;
 	public JoystickButton gameXArcadeMode;
@@ -46,10 +55,19 @@ public class OI {
 		joystickRight = new Joystick(3);
 
 		// buttons added to the right joystick
-		rightJoystickButton1Index = new JoystickButton(joystickRight, 1);
-		rightJoystickButton2Thumb = new JoystickButton(joystickRight, 2);
+		RightJoystickButton1Index = new JoystickButton(joystickRight, 1);
+		RightJoystickButton2Thumb = new JoystickButton(joystickRight, 2);
 		RightJoystickButton3 = new JoystickButton(joystickRight, 3);
 		RightJoystickButton4 = new JoystickButton(joystickRight, 4);
+		RightJoystickButton5 = new JoystickButton(joystickRight, 5);
+		RightJoystickButton6 = new JoystickButton(joystickRight, 6);
+		
+		LeftJoystickButton1Index = new JoystickButton(joystickLeft, 1);
+		LeftJoystickButton2Thumb = new JoystickButton(joystickLeft, 2);
+		LeftJoystickButton3 = new JoystickButton(joystickLeft, 3);
+		LeftJoystickButton4 = new JoystickButton(joystickLeft, 4);
+		LeftJoystickButton5 = new JoystickButton(joystickLeft, 5);
+		LeftJoystickButton6 = new JoystickButton(joystickLeft, 6);
 
 		// Buttons to control mode switch
 		// Currently only work on the right joystick
@@ -70,10 +88,13 @@ public class OI {
 		joystickArcadeModeRight.whenPressed(new RunArcadeJoystick(true));
 		joystickArcadeModeLeft.whenPressed(new RunArcadeJoystick(false));
 		joystickTankMode.whenPressed(new RunJoystickTank());
-		cameraSwitch.whenPressed(new CameraSwitch());
+		//cameraSwitch.whenPressed(new CameraSwitch());
 		//joyCameraSwitch.whenPressed(new CameraSwitch());
 		//gameTankMode.whenPressed(new RunGameTank());
 		//gameXTankMode.whenPressed(new RunGameXTank());
+		
+		
+		
 
 		// Use to control the manipulator
 		// Currently only works on right Joystick
@@ -113,6 +134,26 @@ public class OI {
 	public double getCoPilotLeftTrigger() {
 		double value = gamePad1.getRawAxis(2);
 //		SmartDashboard.putString("left trigger", "" + value);
+		return value;
+	}
+	
+	public boolean getJoystickRightTrigger(){
+		boolean value = joystickRight.getRawButton(1);
+		return value;
+	}
+	
+	public boolean getJoystickLeftTrigger(){
+		boolean value = joystickLeft.getRawButton(1);
+		return value;
+	}
+	
+	public boolean getJoystickRightThree(){
+		boolean value = joystickRight.getRawButton(3);
+		return value;
+	}
+	
+	public boolean getJoystickRightFive(){
+		boolean value = joystickRight.getRawButton(5);
 		return value;
 	}
 	

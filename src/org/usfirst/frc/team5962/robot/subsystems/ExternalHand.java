@@ -24,13 +24,15 @@ public class ExternalHand extends Subsystem {
     }
 	
 	public void runUpward (){
-		//Handvictor.set(-0.4);  
-		myRobot.drive(-0.4, 0);
+		//Handvictor.set(-0.4);
+		myRobot.setMaxOutput(1);
+		myRobot.drive(0.75, 0);
 	}
 	
 	public void runDownward (){
-		//Handvictor.set(0.4);  
-		myRobot.drive(0.4, 0);
+		//Handvictor.set(0.4);
+		myRobot.setMaxOutput(1);
+		myRobot.drive(-0.75, 0);
 	}
 	
 	public void runDownwardHalf(){

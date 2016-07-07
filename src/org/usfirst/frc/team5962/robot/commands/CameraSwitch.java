@@ -9,12 +9,12 @@ import org.usfirst.frc.team5962.robot.subsystems.Camera;
  */
 public class CameraSwitch extends Command {
 	
-	Camera camera = new Camera();
+	//Camera camera = new Camera();
 	
  boolean x = true;
 	
     public CameraSwitch() {
-        requires(camera);
+        //requires(camera);
         setTimeout(0.01);
     }
 
