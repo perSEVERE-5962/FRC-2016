@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5962.robot.commands;
 
 import org.usfirst.frc.team5962.robot.Robot;
+import org.usfirst.frc.team5962.robot.RobotMap;
 import org.usfirst.frc.team5962.robot.subsystems.JoystickThrottle;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -9,7 +10,11 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class RunGameXTank extends Command {
-
+	double maxSpeed = 1;
+	public RunGameXTank(double maxSpeed) {
+        requires(Robot.drive);
+        this.maxSpeed = maxSpeed;
+	}
     public RunGameXTank() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.drive);
@@ -23,7 +28,9 @@ public class RunGameXTank extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.drive.gameXTank();
-    	JoystickThrottle.Speed();
+//    	JoystickThrottle.Speed();
+		RobotMap.myRobot.setMaxOutput(maxSpeed);
+
     }
 
     // Make this return true when this Command no longer needs to run execute()

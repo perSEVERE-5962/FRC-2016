@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import org.usfirst.frc.team5962.robot.commands.RunAutonomous;
+import org.usfirst.frc.team5962.robot.commands.RunGameTank;
+import org.usfirst.frc.team5962.robot.commands.RunGameXTank;
 import org.usfirst.frc.team5962.robot.commands.RunJoystickTank;
 import org.usfirst.frc.team5962.robot.sensors.RobotEncoder;
 import org.usfirst.frc.team5962.robot.sensors.RobotGyro;
@@ -61,11 +63,13 @@ public class Robot extends IterativeRobot {
 	public static RobotEncoder encoder = new RobotEncoder();
 
     public static RobotUltrasonicDigital ultrasonicShoot;
-   // public static RobotUltrasonicDigital ultrasonicFront;
+   // public static RobotUltrasonicDigital ultrasonicFront;+
 
 	
 	public static OI oi;
 	
+	
+	public static double maxSpeed = 1;
 	
 	public static enum AutonomousPosition {
 		POSITION_1,
@@ -75,6 +79,13 @@ public class Robot extends IterativeRobot {
 		POSITION_5
 	}
 	
+	public static enum MaxSpeedOptions {
+		ONE_QUARTER,
+		HALF,
+		THREE_QUARTER,
+		FULL
+	}
+
 	public static enum AutonomousObstacle {
 		LOW_BAR,
 		PORTCULLIS,
@@ -91,6 +102,8 @@ public class Robot extends IterativeRobot {
 	RunAutonomous autonomousCommand;
 	SendableChooser autoPositionChooser;
 	SendableChooser autoObstacleChooser;
+	
+	SendableChooser maxSpeedChooser;
 	
 	public void robotInit() {	
 		/*
@@ -125,8 +138,18 @@ public class Robot extends IterativeRobot {
 	
 		initAutonomousPositionChooser();
 		initAutonomousObstacleChooser();
+		initMaxSpeedChooser();
 	}
 	
+	private void initMaxSpeedChooser() {
+		maxSpeedChooser = new SendableChooser();
+		maxSpeedChooser.addDefault("3/4  Speed", MaxSpeedOptions.THREE_QUARTER);
+		maxSpeedChooser.addObject("1/4 Speed", MaxSpeedOptions.ONE_QUARTER);
+		maxSpeedChooser.addObject("1/2 Speed", MaxSpeedOptions.HALF);
+		maxSpeedChooser.addObject("Full Speed", MaxSpeedOptions.FULL);	
+		SmartDashboard.putData("Select Max Speed", maxSpeedChooser);
+	}
+		
 	private void initAutonomousPositionChooser() {
 		autoPositionChooser = new SendableChooser();
 		autoPositionChooser.addDefault("Position 1", AutonomousPosition.POSITION_1);
@@ -136,7 +159,7 @@ public class Robot extends IterativeRobot {
 		autoPositionChooser.addObject("Position 5", AutonomousPosition.POSITION_5);	
 		SmartDashboard.putData("Select Autonomous Start Position", autoPositionChooser);
 	}
-	
+
 	private void initAutonomousObstacleChooser() {
 		autoObstacleChooser = new SendableChooser();
 		autoObstacleChooser.addDefault("None", AutonomousObstacle.NONE);
@@ -202,9 +225,29 @@ public class Robot extends IterativeRobot {
 		
 		
 		// set the default
-		Command command = new RunJoystickTank();
-//		Command command = new RunGameTank();
+//		Command command = new RunJoystickTank();
+		Command command = new RunGameXTank(getMaxSpeed());
 		command.start();
+	}
+	
+	private double getMaxSpeed(){
+		MaxSpeedOptions maxSpeedOption = (MaxSpeedOptions) maxSpeedChooser.getSelected();
+		double maxSpeed=1;
+		switch (maxSpeedOption) {
+			case ONE_QUARTER:
+				maxSpeed=0.25;
+				break;
+			case HALF:
+				maxSpeed=0.5;
+				break;
+			case THREE_QUARTER:
+				maxSpeed=0.75;
+				break;
+			case FULL:
+			default:
+				maxSpeed=1;
+		}
+		return maxSpeed;
 	}
 
 	/**
