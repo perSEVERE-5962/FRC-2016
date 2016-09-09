@@ -21,7 +21,7 @@ public class Drive extends Subsystem {
 	}
 
 	public void gameXTank() {
-		RobotMap.myRobot.tankDrive(Robot.oi.gamePad2.getRawAxis(1), Robot.oi.gamePad2.getRawAxis(5));
+		RobotMap.myRobot.tankDrive(Robot.oi.gamePad2.getRawAxis(1), Robot.oi.gamePad2.getRawAxis(5));	
 	}
 
 	public void joystickTank() {

@@ -143,9 +143,9 @@ public class Robot extends IterativeRobot {
 	
 	private void initMaxSpeedChooser() {
 		maxSpeedChooser = new SendableChooser();
-		maxSpeedChooser.addDefault("3/4  Speed", MaxSpeedOptions.THREE_QUARTER);
+		maxSpeedChooser.addDefault("1/2  Speed", MaxSpeedOptions.HALF);
 		maxSpeedChooser.addObject("1/4 Speed", MaxSpeedOptions.ONE_QUARTER);
-		maxSpeedChooser.addObject("1/2 Speed", MaxSpeedOptions.HALF);
+		maxSpeedChooser.addObject("3/4 Speed", MaxSpeedOptions.THREE_QUARTER);
 		maxSpeedChooser.addObject("Full Speed", MaxSpeedOptions.FULL);	
 		SmartDashboard.putData("Select Max Speed", maxSpeedChooser);
 	}
