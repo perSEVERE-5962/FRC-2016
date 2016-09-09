@@ -89,10 +89,10 @@ public class RobotMap {
 		// configure the RobotDrive
 //		if (testSwitch.get()) {
 //			// in test mode
-//			configureRobotDrive(COMPETITION_ROBOT_DRIVE);
+			configureRobotDrive(COMPETITION_ROBOT_DRIVE);
 //		} else {
 //			// in competition mode
-			configureRobotDrive(TEST_ROBOT_DRIVE);
+//			configureRobotDrive(TEST_ROBOT_DRIVE);
 //		}
 	}
 		
