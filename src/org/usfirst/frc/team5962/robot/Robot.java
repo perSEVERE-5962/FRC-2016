@@ -69,7 +69,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	
 	
-	public static double maxSpeed = 1;
+// OLDHOMEDAY2016 code	public static double maxSpeed = 1;
 	
 	public static enum AutonomousPosition {
 		POSITION_1,
@@ -79,13 +79,16 @@ public class Robot extends IterativeRobot {
 		POSITION_5
 	}
 	
+/*
+ * OLDHOMEDAY2016 code
+ * 
 	public static enum MaxSpeedOptions {
 		ONE_QUARTER,
 		HALF,
 		THREE_QUARTER,
 		FULL
 	}
-
+ */
 	public static enum AutonomousObstacle {
 		LOW_BAR,
 		PORTCULLIS,
@@ -103,7 +106,7 @@ public class Robot extends IterativeRobot {
 	SendableChooser autoPositionChooser;
 	SendableChooser autoObstacleChooser;
 	
-	SendableChooser maxSpeedChooser;
+// OLDHOMEDAY2016 code	SendableChooser maxSpeedChooser;
 	
 	public void robotInit() {	
 		/*
@@ -138,9 +141,12 @@ public class Robot extends IterativeRobot {
 	
 		initAutonomousPositionChooser();
 		initAutonomousObstacleChooser();
-		initMaxSpeedChooser();
+// OLDHOMEDAY2016 code		initMaxSpeedChooser();
 	}
 	
+/*
+ * OLDHOMEDAY2016 code
+ * 
 	private void initMaxSpeedChooser() {
 		maxSpeedChooser = new SendableChooser();
 		maxSpeedChooser.addDefault("1/2  Speed", MaxSpeedOptions.HALF);
@@ -149,7 +155,7 @@ public class Robot extends IterativeRobot {
 		maxSpeedChooser.addObject("Full Speed", MaxSpeedOptions.FULL);	
 		SmartDashboard.putData("Select Max Speed", maxSpeedChooser);
 	}
-		
+ */		
 	private void initAutonomousPositionChooser() {
 		autoPositionChooser = new SendableChooser();
 		autoPositionChooser.addDefault("Position 1", AutonomousPosition.POSITION_1);
@@ -225,11 +231,14 @@ public class Robot extends IterativeRobot {
 		
 		
 		// set the default
-//		Command command = new RunJoystickTank();
-		Command command = new RunGameXTank(getMaxSpeed());
+		Command command = new RunJoystickTank();
+//OLDHOMEDAY2016 code		Command command = new RunGameXTank(getMaxSpeed());
 		command.start();
 	}
-	
+
+/*
+ * OLDHOMEDAY2016 code
+ * 
 	private double getMaxSpeed(){
 		MaxSpeedOptions maxSpeedOption = (MaxSpeedOptions) maxSpeedChooser.getSelected();
 		double maxSpeed=1;
@@ -249,6 +258,7 @@ public class Robot extends IterativeRobot {
 		}
 		return maxSpeed;
 	}
+ */
 
 	/**
 	 * This function is called periodically during operator control6

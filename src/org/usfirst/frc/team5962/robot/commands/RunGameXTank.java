@@ -10,11 +10,15 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class RunGameXTank extends Command {
-	double maxSpeed = 1;
+/*
+ *  OLDHOMEDAY2016 code	
+ *  
+    double maxSpeed = 1;
 	public RunGameXTank(double maxSpeed) {
         requires(Robot.drive);
         this.maxSpeed = maxSpeed;
 	}
+ */
     public RunGameXTank() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.drive);
@@ -28,8 +32,8 @@ public class RunGameXTank extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.drive.gameXTank();
-//    	JoystickThrottle.Speed();
-		RobotMap.myRobot.setMaxOutput(maxSpeed);
+    	JoystickThrottle.Speed();
+// OLDHOMEDAY2016 code		RobotMap.myRobot.setMaxOutput(maxSpeed);
 
     }
 
